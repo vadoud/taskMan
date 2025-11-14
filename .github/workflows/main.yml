@@ -32,7 +32,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: build/ios/iphoneos/ios-taskman.zip
+          file: build/ios/iphoneos/ios-taskman.zip
           tag: v1.0
           overwrite: true
           body: "this is ios build "
+
