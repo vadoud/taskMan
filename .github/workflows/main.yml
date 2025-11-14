@@ -1,0 +1,38 @@
+name: ios-taskman
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios: 
+    name: Build iOS App
+    runs-on: macos-latest
+
+    steps:
+      
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: 'x64'
+      - run: flutter pub get
+      - run: pod repo update
+        working-directory: ios
+      - run: flutter build ios --release --no-codesign
+      - run: mkdir payload
+        working-directory: build/ios/iphoneos
+
+      - run: mv Runner.app/ payload
+        working-directory: build/ios/iphoneos
+
+      - name: zip output
+        run: zip -qq -r -9 ios-taskman.zip payload
+        working-directory: build/ios/iphoneos
+
+      - name: upload binaries to releases
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: build/ios/iphoneos/ios-taskman.zip
+          tag: v1.0
+          overwrite: true
+          body: "this is ios build "
