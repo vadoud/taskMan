@@ -4,7 +4,7 @@ on:
 
 jobs:
   build-ios: 
-    name: Build iOS App
+    name: 🎉 iOS Build
     runs-on: macos-latest
 
     steps:
@@ -25,15 +25,16 @@ jobs:
         working-directory: build/ios/iphoneos
 
       - name: zip output
-        run: zip -qq -r -9 ios-taskman.zip payload
+        run: zip -qq -r -9 ios-taskman.ipa payload
         working-directory: build/ios/iphoneos
 
       - name: upload binaries to releases
         uses: svenstaro/upload-release-action@v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/ios-taskman.zip
-          tag: v1.0
+          file: build/ios/iphoneos/ios-taskman.ipa
+          tag: v2.0
           overwrite: true
           body: "this is ios build "
+
 
